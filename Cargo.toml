@@ -1,7 +1,7 @@
 [project]
 
 name = "glib-2_0-sys"
-version = "0.0.1"
+version = "0.0.2-dev"
 authors = ["Mikhail Zabaluev <mikhail.zabaluev@gmail.com>"]
 description = "Import crate for GLib"
 license = "LGPL-2.1+"
