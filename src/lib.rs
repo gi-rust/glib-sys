@@ -18,7 +18,8 @@
 #![crate_type = "lib"]
 
 #![allow(missing_copy_implementations)]
-#![allow(unstable)]
+
+#![feature(libc)]
 
 extern crate libc;
 
