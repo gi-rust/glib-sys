@@ -14,4 +14,4 @@ build = "build.rs"
 links = "glib-2.0"
 
 [build-dependencies]
-pkg-config = "0.1.6"
+pkg-config = "0.1.7"
