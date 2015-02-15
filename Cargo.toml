@@ -1,7 +1,7 @@
 [project]
 
 name = "glib-2_0-sys"
-version = "0.0.3"
+version = "0.0.4-dev"
 authors = ["Mikhail Zabaluev <mikhail.zabaluev@gmail.com>"]
 description = "Import crate for GLib"
 license = "LGPL-2.1+"
@@ -14,4 +14,4 @@ build = "build.rs"
 links = "glib-2.0"
 
 [build-dependencies]
-pkg-config = "0.2.0"
+pkg-config = "0.2"
