@@ -18,6 +18,7 @@
 #![crate_type = "lib"]
 
 #![allow(missing_copy_implementations)]
+#![allow(unstable_features)]
 
 #![feature(libc)]
 
