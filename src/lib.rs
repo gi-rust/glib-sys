@@ -25,6 +25,7 @@
 extern crate libc;
 
 pub mod types;
+pub mod list;
 
 use types::{gboolean, gchar, gint, gpointer};
 
