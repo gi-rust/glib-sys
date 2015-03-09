@@ -25,7 +25,6 @@
 extern crate libc;
 
 pub mod types;
-pub mod list;
 
 use types::{gboolean, gchar, gint, gpointer};
 
@@ -43,6 +42,13 @@ pub struct GMainContext;
 pub struct GMainLoop;
 
 pub type GQuark = u32;
+
+#[repr(C)]
+pub struct GList {
+    pub data: gpointer,
+    pub next: *mut GList,
+    pub prev: *mut GList
+}
 
 extern {
     pub fn g_free(mem: gpointer);
