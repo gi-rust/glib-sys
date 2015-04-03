@@ -13,5 +13,8 @@ repository = "https://github.com/gi-rust/glib-sys.git"
 build = "build.rs"
 links = "glib-2.0"
 
+[dependencies]
+libc = "0.1.5"
+
 [build-dependencies]
 pkg-config = "0.3"
