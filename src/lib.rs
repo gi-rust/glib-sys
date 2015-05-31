@@ -47,6 +47,15 @@ pub struct GList {
     pub prev: *mut GList
 }
 
+pub type GDestroyNotify = extern "C" fn (gpointer);
+pub type GSourceFunc = extern "C" fn (gpointer) -> gboolean;
+
+pub const G_PRIORITY_DEFAULT: gint = 0;
+pub const G_PRIORITY_DEFAULT_IDLE: gint = 200;
+pub const G_PRIORITY_HIGH: gint = -100;
+pub const G_PRIORITY_HIGH_IDLE: gint = 100;
+pub const G_PRIORITY_LOW: gint = 300;
+
 extern {
     pub fn g_free(mem: gpointer);
     pub fn g_error_copy(error: *const GError) -> *mut GError;
@@ -56,6 +65,7 @@ extern {
     pub fn g_main_context_ref(context: *mut GMainContext) -> *mut GMainContext;
     pub fn g_main_context_unref(context: *mut GMainContext);
     pub fn g_main_context_default() -> *mut GMainContext;
+    pub fn g_main_context_invoke_full(context: *mut GMainContext, priority: gint, function: GSourceFunc, data: gpointer, notify: Option<GDestroyNotify>);
     pub fn g_main_context_push_thread_default(context: *mut GMainContext);
     pub fn g_main_context_pop_thread_default(context: *mut GMainContext);
     pub fn g_main_loop_new(ctx: *mut GMainContext, is_running: gboolean) -> *mut GMainLoop;
