@@ -19,11 +19,10 @@
 
 #![allow(missing_copy_implementations)]
 
+extern crate gtypes;
 extern crate libc;
 
-pub mod types;
-
-use types::{gboolean, gchar, gint, gpointer, guint};
+use gtypes::*;
 
 #[repr(C)]
 pub struct GError {
