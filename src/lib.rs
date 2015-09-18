@@ -32,14 +32,15 @@ pub struct GError {
     pub message: *const gchar
 }
 
-#[repr(C)]
-pub struct GMainContext;
+pub enum GMainContext { }
+
+pub enum GMainLoop { }
 
 #[repr(C)]
-pub struct GMainLoop;
-
-#[repr(C)]
-pub struct GSource;
+pub struct GSource {
+    callback_data: gpointer
+    // ...
+}
 
 pub type GQuark = u32;
 
