@@ -50,6 +50,13 @@ pub struct GList {
     pub prev: *mut GList
 }
 
+#[repr(C)]
+pub struct GString {
+    pub str: *mut gchar,
+    pub len: gsize,
+    pub allocated_len: gsize
+}
+
 pub type GDestroyNotify = extern "C" fn (gpointer);
 pub type GSourceFunc = extern "C" fn (gpointer) -> gboolean;
 
@@ -87,6 +94,7 @@ extern {
     pub fn g_source_set_callback(source: *mut GSource, func: GSourceFunc, data: gpointer, notify: Option<GDestroyNotify>);
     pub fn g_source_set_priority(source: *mut GSource, priority: gint);
     pub fn g_strdup(str: *const gchar) -> *mut gchar;
+    pub fn g_string_append_unichar(string: *mut GString, wc: gunichar) -> *mut GString;
     pub fn g_timeout_source_new(interval: guint) -> *mut GSource;
     pub fn g_timeout_source_new_seconds(interval: guint) -> *mut GSource;
 }
