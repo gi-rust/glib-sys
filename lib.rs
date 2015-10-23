@@ -787,7 +787,7 @@ pub const G_MAXUINT64: u64 = 18446744073709551615;
 
 pub const G_MAXUINT8: u8 = 255;
 
-pub const GLIB_MICRO_VERSION: gint = 1;
+pub const GLIB_MICRO_VERSION: gint = 0;
 
 pub const G_MININT16: i16 = -32768;
 
@@ -797,7 +797,7 @@ pub const G_MININT64: i64 = -9223372036854775808;
 
 pub const G_MININT8: i8 = -128;
 
-pub const GLIB_MINOR_VERSION: gint = 46;
+pub const GLIB_MINOR_VERSION: gint = 47;
 
 pub const G_MODULE_SUFFIX: &'static [u8] = b"so\0";
 
@@ -1947,6 +1947,12 @@ pub enum GUnicodeScript {
     Siddham = 123,
     Tirhuta = 124,
     WarangCiti = 125,
+    Ahom = 126,
+    AnatolianHieroglyphs = 127,
+    Hatran = 128,
+    Multani = 129,
+    OldHungarian = 130,
+    Signwriting = 131,
 }
 pub const G_UNICODE_SCRIPT_INVALID_CODE: GUnicodeScript = GUnicodeScript::InvalidCode;
 pub const G_UNICODE_SCRIPT_COMMON: GUnicodeScript = GUnicodeScript::Common;
@@ -2075,6 +2081,12 @@ pub const G_UNICODE_SCRIPT_PSALTER_PAHLAVI: GUnicodeScript = GUnicodeScript::Psa
 pub const G_UNICODE_SCRIPT_SIDDHAM: GUnicodeScript = GUnicodeScript::Siddham;
 pub const G_UNICODE_SCRIPT_TIRHUTA: GUnicodeScript = GUnicodeScript::Tirhuta;
 pub const G_UNICODE_SCRIPT_WARANG_CITI: GUnicodeScript = GUnicodeScript::WarangCiti;
+pub const G_UNICODE_SCRIPT_AHOM: GUnicodeScript = GUnicodeScript::Ahom;
+pub const G_UNICODE_SCRIPT_ANATOLIAN_HIEROGLYPHS: GUnicodeScript = GUnicodeScript::AnatolianHieroglyphs;
+pub const G_UNICODE_SCRIPT_HATRAN: GUnicodeScript = GUnicodeScript::Hatran;
+pub const G_UNICODE_SCRIPT_MULTANI: GUnicodeScript = GUnicodeScript::Multani;
+pub const G_UNICODE_SCRIPT_OLD_HUNGARIAN: GUnicodeScript = GUnicodeScript::OldHungarian;
+pub const G_UNICODE_SCRIPT_SIGNWRITING: GUnicodeScript = GUnicodeScript::Signwriting;
 
 #[repr(C)]
 pub enum GUnicodeType {
@@ -3191,6 +3203,7 @@ extern {
     pub fn g_sequence_insert_before(iter: *mut GSequenceIter, data: gpointer) -> *mut GSequenceIter;
     pub fn g_sequence_insert_sorted(seq: *mut GSequence, data: gpointer, cmp_func: GCompareDataFunc, cmp_data: gpointer) -> *mut GSequenceIter;
     pub fn g_sequence_insert_sorted_iter(seq: *mut GSequence, data: gpointer, iter_cmp: GSequenceIterCompareFunc, cmp_data: gpointer) -> *mut GSequenceIter;
+    pub fn g_sequence_is_empty(seq: *mut GSequence) -> gboolean;
     pub fn g_sequence_iter_compare(a: *mut GSequenceIter, b: *mut GSequenceIter) -> gint;
     pub fn g_sequence_iter_get_position(iter: *mut GSequenceIter) -> gint;
     pub fn g_sequence_iter_get_sequence(iter: *mut GSequenceIter) -> *mut GSequence;
