@@ -1,0 +1,109 @@
+<%!
+
+from grust.namematch import MatchList
+
+# The GType symbols are in libgobject
+ignore_gtype_functions = True
+
+suppress_c_names = MatchList(
+    # Structures containing bit fields, custom-defined below
+    "GDate",
+    "GHookList",
+    "GIOChannel",
+    "GScannerConfig",
+
+    # Unions, custom-defined below
+    "GDoubleIEEE754",
+    "GFloatIEEE754",
+    "GMutex",
+    "GTokenValue",
+
+    # Has a long double parameter
+    "g_assertion_message_cmpnum"
+)
+
+%>\
+<%inherit file="/sys/crate.tmpl"/>
+
+<%block name="custom_crate_attributes">\
+#![allow(non_upper_case_globals)]  // For G_CSET_a_2_z
+</%block>
+
+<%block name="custom_types">\
+
+#[repr(C)]
+pub struct GDate([u32; 2]);
+
+#[repr(C)]
+pub struct GDoubleIEEE754(gdouble);
+
+#[repr(C)]
+pub struct GFloatIEEE754(gfloat);
+
+#[repr(C)]
+pub struct GHookList {
+    pub seq_id: gulong,
+    // Two bit fields in the C definition here
+    _hook_size_is_setup: u32,
+    pub hooks: *mut GHook,
+    dummy3: gpointer,
+    pub finalize_hook: Option<GHookFinalizeFunc>,
+    dummy: [gpointer; 2]
+}
+
+#[repr(C)]
+pub struct GIOChannel {
+    ref_count :gint,
+    funcs: *mut GIOFuncs,
+
+    encoding: *mut gchar,
+    read_cd: GIConv,
+    write_cd: GIConv,
+    line_term: *mut gchar,
+    line_term_len: gint,
+
+    buf_size: gsize,
+    read_buf: *mut GString,
+    encoded_read_buf: *mut GString,
+    write_buf: *mut GString,
+
+    ## 11 * size_of(usize) at this point
+
+    partial_write_buf: [gchar; 6],
+
+    // A group of bit fields in the C definition here
+    // to fit after partial_write_buf
+    flags: u16,
+
+    reserved1: gpointer,
+    reserved2: gpointer
+}
+
+#[cfg(target_pointer_width = "32")]
+#[repr(C)]
+pub struct GMutex([guint; 2]);
+
+// NOTE: An ILP64 target would need GMutex defined as above
+#[cfg(target_pointer_width = "64")]
+#[repr(C)]
+pub struct GMutex(gpointer);
+
+#[repr(C)]
+pub struct  GScannerConfig {
+    pub cset_skip_characters: *mut gchar,
+    pub cset_identifier_first: *mut gchar,
+    pub cset_identifier_nth: *mut gchar,
+    pub cpair_comment_single: *mut gchar,
+
+    // a group of bit fields in the C definition here
+    flags: u32,
+
+    padding_dummy: guint
+}
+
+#[repr(C)]
+pub struct GTokenValue {
+    v: u64
+}
+
+</%block>
