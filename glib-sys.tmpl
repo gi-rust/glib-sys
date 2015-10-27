@@ -20,6 +20,7 @@ suppress_c_names = MatchList(
 
     # C compiler/ABI feature macros, varying with target
     "G_HAVE_*",
+    "G_CAN_INLINE",
 
     # System-specific definitions, custom-defined below
     "GLIB_SYSDEF_*",
@@ -34,6 +35,12 @@ suppress_c_names = MatchList(
 
     # Macros expanding to size of types, not needed as constants in Rust
     "GLIB_SIZEOF_*",
+
+    # Don't have va_list on the Rust side, no need for it either
+    "G_VA_COPY_AS_ARRAY",
+
+    # No use for it
+    "GLIB_STATIC_COMPILATION",
 
     # Has a long double parameter
     "g_assertion_message_cmpnum"
