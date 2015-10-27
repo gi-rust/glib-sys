@@ -18,6 +18,9 @@ suppress_c_names = MatchList(
     "GMutex",
     "GTokenValue",
 
+    # C compiler/ABI feature macros, varying with target
+    "G_HAVE_*",
+
     # Has a long double parameter
     "g_assertion_message_cmpnum"
 )
