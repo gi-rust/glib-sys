@@ -23,6 +23,13 @@ suppress_c_names = MatchList(
 
     # System-specific definitions, custom-defined below
     "GLIB_SYSDEF_*",
+    "G_GINT*_MODIFIER",
+    "G_GINT*_FORMAT",
+    "G_GUINT*_FORMAT",
+    "G_GSIZE_MODIFIER",
+    "G_GSSIZE_MODIFIER",
+    "G_GSIZE_FORMAT",
+    "G_GSSIZE_FORMAT",
     "GIOCondition",
 
     # Has a long double parameter
@@ -161,8 +168,101 @@ mod consts {
         pub const GLIB_SYSDEF_MSG_PEEK:      gint = 2;
         pub const GLIB_SYSDEF_MSG_DONTROUTE: gint = 4;
     }
+
+    // ILP32, standard printf format modifiers
+    #[cfg(all(any(target_arch = "x86",
+                  target_arch = "arm",
+                  target_arch = "mips",
+                  target_arch = "mipsel",
+                  target_arch = "powerpc",
+                  target_arch = "le32"),
+              not(windows)))]
+    pub mod datamodel {
+        pub const G_GINT16_MODIFIER: &'static [u8] = b"h\0";
+        pub const G_GINT16_FORMAT: &'static [u8] = b"hi\0";
+        pub const G_GUINT16_FORMAT: &'static [u8] = b"hu\0";
+        pub const G_GINT32_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GINT32_FORMAT: &'static [u8] = b"i\0";
+        pub const G_GUINT32_FORMAT: &'static [u8] = b"u\0";
+        pub const G_GINT64_MODIFIER: &'static [u8] = b"ll\0";
+        pub const G_GINT64_FORMAT: &'static [u8] = b"lli\0";
+        pub const G_GUINT64_FORMAT: &'static [u8] = b"llu\0";
+        pub const G_GINTPTR_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GINTPTR_FORMAT: &'static [u8] = b"i\0";
+        pub const G_GUINTPTR_FORMAT: &'static [u8] = b"u\0";
+        pub const G_GSIZE_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GSSIZE_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GSIZE_FORMAT: &'static [u8] = b"u\0";
+        pub const G_GSSIZE_FORMAT: &'static [u8] = b"i\0";
+    }
+
+    // On Win32, GLib uses MSVCRT-specific format modifiers for 64-bit types
+    #[cfg(all(windows, target_arch = "x86"))]
+    pub mod datamodel {
+        pub const G_GINT16_MODIFIER: &'static [u8] = b"h\0";
+        pub const G_GINT16_FORMAT: &'static [u8] = b"hi\0";
+        pub const G_GUINT16_FORMAT: &'static [u8] = b"hu\0";
+        pub const G_GINT32_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GINT32_FORMAT: &'static [u8] = b"i\0";
+        pub const G_GUINT32_FORMAT: &'static [u8] = b"u\0";
+        pub const G_GINT64_MODIFIER: &'static [u8] = b"I64\0";
+        pub const G_GINT64_FORMAT: &'static [u8] = b"I64i\0";
+        pub const G_GUINT64_FORMAT: &'static [u8] = b"I64u\0";
+        pub const G_GINTPTR_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GINTPTR_FORMAT: &'static [u8] = b"i\0";
+        pub const G_GUINTPTR_FORMAT: &'static [u8] = b"u\0";
+        pub const G_GSIZE_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GSSIZE_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GSIZE_FORMAT: &'static [u8] = b"u\0";
+        pub const G_GSSIZE_FORMAT: &'static [u8] = b"i\0";
+    }
+
+    // LP64
+    #[cfg(all(unix,
+              any(target_arch = "x86_64",
+                  target_arch = "aarch64")))]
+    pub mod datamodel {
+        pub const G_GINT16_MODIFIER: &'static [u8] = b"h\0";
+        pub const G_GINT16_FORMAT: &'static [u8] = b"hi\0";
+        pub const G_GUINT16_FORMAT: &'static [u8] = b"hu\0";
+        pub const G_GINT32_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GINT32_FORMAT: &'static [u8] = b"i\0";
+        pub const G_GUINT32_FORMAT: &'static [u8] = b"u\0";
+        pub const G_GINT64_MODIFIER: &'static [u8] = b"l\0";
+        pub const G_GINT64_FORMAT: &'static [u8] = b"li\0";
+        pub const G_GUINT64_FORMAT: &'static [u8] = b"lu\0";
+        pub const G_GINTPTR_MODIFIER: &'static [u8] = b"l\0";
+        pub const G_GINTPTR_FORMAT: &'static [u8] = b"li\0";
+        pub const G_GUINTPTR_FORMAT: &'static [u8] = b"lu\0";
+        pub const G_GSIZE_MODIFIER: &'static [u8] = b"l\0";
+        pub const G_GSSIZE_MODIFIER: &'static [u8] = b"l\0";
+        pub const G_GSIZE_FORMAT: &'static [u8] = b"lu\0";
+        pub const G_GSSIZE_FORMAT: &'static [u8] = b"li\0";
+    }
+
+    // 64-bit Windows
+    #[cfg(all(windows, target_arch = "x86_64"))]
+    pub mod datamodel {
+        pub const G_GINT16_MODIFIER: &'static [u8] = b"h\0";
+        pub const G_GINT16_FORMAT: &'static [u8] = b"hi\0";
+        pub const G_GUINT16_FORMAT: &'static [u8] = b"hu\0";
+        pub const G_GINT32_MODIFIER: &'static [u8] = b"\0";
+        pub const G_GINT32_FORMAT: &'static [u8] = b"i\0";
+        pub const G_GUINT32_FORMAT: &'static [u8] = b"u\0";
+        pub const G_GINT64_MODIFIER: &'static [u8] = b"I64\0";
+        pub const G_GINT64_FORMAT: &'static [u8] = b"I64i\0";
+        pub const G_GUINT64_FORMAT: &'static [u8] = b"I64u\0";
+        pub const G_GINTPTR_MODIFIER: &'static [u8] = b"I64\0";
+        pub const G_GINTPTR_FORMAT: &'static [u8] = b"I64i\0";
+        pub const G_GUINTPTR_FORMAT: &'static [u8] = b"I64u\0";
+        pub const G_GSIZE_MODIFIER: &'static [u8] = b"I64\0";
+        pub const G_GSSIZE_MODIFIER: &'static [u8] = b"I64\0";
+        pub const G_GSIZE_FORMAT: &'static [u8] = b"I64u\0";
+        pub const G_GSSIZE_FORMAT: &'static [u8] = b"I64i\0";
+    }
 }
 
 pub use consts::os::*;
+pub use consts::datamodel::*;
 
 </%block>
