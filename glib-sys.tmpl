@@ -31,7 +31,9 @@ suppress_c_names = MatchList(
     "G_GSSIZE_MODIFIER",
     "G_GSIZE_FORMAT",
     "G_GSSIZE_FORMAT",
+    "G_MODULE_SUFFIX",
     "GIOCondition",
+    "GPid",
 
     # Macros expanding to size of types, not needed as constants in Rust
     "GLIB_SIZEOF_*",
@@ -130,6 +132,12 @@ pub struct GMutex([guint; 2]);
 #[repr(C)]
 pub struct GMutex(gpointer);
 
+#[cfg(unix)]
+pub type GPid = gint;
+
+#[cfg(windows)]
+pub type GPid = *mut libc::c_void;
+
 #[repr(C)]
 pub struct  GScannerConfig {
     pub cset_skip_characters: *mut gchar,
@@ -155,6 +163,12 @@ pub struct GTokenValue {
 pub const GLIB_SYSDEF_AF_INET:  gint = libc::AF_INET;
 pub const GLIB_SYSDEF_AF_INET6: gint = libc::AF_INET6;
 pub const GLIB_SYSDEF_AF_UNIX:  gint = libc::AF_UNIX;
+
+#[cfg(unix)]
+pub const G_MODULE_SUFFIX: &'static [u8] = b"so\0";
+
+#[cfg(windows)]
+pub const G_MODULE_SUFFIX: &'static [u8] = b"dll\0";
 
 mod consts {
 
