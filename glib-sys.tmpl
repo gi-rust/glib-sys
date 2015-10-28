@@ -32,6 +32,9 @@ suppress_c_names = MatchList(
     "G_GSSIZE_FORMAT",
     "GIOCondition",
 
+    # Macros expanding to size of types, not needed as constants in Rust
+    "GLIB_SIZEOF_*",
+
     # Has a long double parameter
     "g_assertion_message_cmpnum"
 )
