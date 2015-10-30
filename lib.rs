@@ -255,10 +255,6 @@ pub const G_DATE_BAD_JULIAN: gint = 0;
 
 pub const G_DATE_BAD_YEAR: gint = 0;
 
-pub const G_DIR_SEPARATOR: gint = 92;
-
-pub const G_DIR_SEPARATOR_S: &'static [u8] = b"\\\0";
-
 #[repr(C)]
 pub struct GData(gpointer);
 
@@ -959,8 +955,6 @@ pub const G_PI_2: gdouble = 1.570796;
 
 pub const G_PI_4: gdouble = 0.785398;
 
-pub const G_POLLFD_FORMAT: &'static [u8] = b"%#I64x\0";
-
 pub const G_PRIORITY_DEFAULT: gint = 0;
 
 pub const G_PRIORITY_DEFAULT_IDLE: gint = 200;
@@ -1214,10 +1208,6 @@ pub const G_REGEX_MATCH_BSR_ANY: guint = 16777216;
 pub const G_REGEX_MATCH_PARTIAL_SOFT: guint = 32768;
 pub const G_REGEX_MATCH_PARTIAL_HARD: guint = 134217728;
 pub const G_REGEX_MATCH_NOTEMPTY_ATSTART: guint = 268435456;
-
-pub const G_SEARCHPATH_SEPARATOR: gint = 59;
-
-pub const G_SEARCHPATH_SEPARATOR_S: &'static [u8] = b";\0";
 
 #[repr(C)]
 pub struct GSList {
@@ -2220,12 +2210,6 @@ pub const GLIB_SYSDEF_AF_INET:  gint = libc::AF_INET;
 pub const GLIB_SYSDEF_AF_INET6: gint = libc::AF_INET6;
 pub const GLIB_SYSDEF_AF_UNIX:  gint = libc::AF_UNIX;
 
-#[cfg(unix)]
-pub const G_MODULE_SUFFIX: &'static [u8] = b"so\0";
-
-#[cfg(windows)]
-pub const G_MODULE_SUFFIX: &'static [u8] = b"dll\0";
-
 mod consts {
 
     // The BSD definitions are used everywhere,
@@ -2340,10 +2324,45 @@ mod consts {
         pub const G_GSIZE_FORMAT: &'static [u8] = b"I64u\0";
         pub const G_GSSIZE_FORMAT: &'static [u8] = b"I64i\0";
     }
+
+    #[cfg(unix)]
+    pub mod filename {
+        pub const G_DIR_SEPARATOR: u8 = b'/';
+        pub const G_DIR_SEPARATOR_S: &'static [u8] = b"/\0";
+        pub const G_SEARCHPATH_SEPARATOR: u8 = b':';
+        pub const G_SEARCHPATH_SEPARATOR_S: &'static [u8] = b":\0";
+        pub const G_MODULE_SUFFIX: &'static [u8] = b"so\0";
+    }
+
+    #[cfg(windows)]
+    pub mod filename {
+        pub const G_DIR_SEPARATOR: u8 = b'\\';
+        pub const G_DIR_SEPARATOR_S: &'static [u8] = b"\\\0";
+        pub const G_SEARCHPATH_SEPARATOR: u8 = b';';
+        pub const G_SEARCHPATH_SEPARATOR_S: &'static [u8] = b";\0";
+        pub const G_MODULE_SUFFIX: &'static [u8] = b"dll\0";
+    }
+
+    #[cfg(unix)]
+    pub mod pollfd {
+        pub const G_POLLFD_FORMAT: &'static [u8] = b"%d\0";
+    }
+
+    #[cfg(windows)]
+    pub mod pollfd {
+
+        #[cfg(target_arch = "x86")]
+        pub const G_POLLFD_FORMAT: &'static [u8] = b"%#x\0";
+
+        #[cfg(target_arch = "x86_64")]
+        pub const G_POLLFD_FORMAT: &'static [u8] = b"%#I64x\0";
+    }
 }
 
 pub use consts::os::*;
 pub use consts::datamodel::*;
+pub use consts::filename::*;
+pub use consts::pollfd::*;
 
 extern {
     pub fn g_access(filename: *const gchar, mode: gint) -> gint;
