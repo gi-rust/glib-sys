@@ -31,6 +31,7 @@ suppress_c_names = MatchList(
     "G_GSSIZE_MODIFIER",
     "G_GSIZE_FORMAT",
     "G_GSSIZE_FORMAT",
+    "G_POLLFD_FORMAT",
     "G_MODULE_SUFFIX",
     "G_DIR_SEPARATOR*",
     "G_SEARCHPATH_SEPARATOR*",
@@ -299,10 +300,25 @@ mod consts {
         pub const G_MODULE_SUFFIX: &'static [u8] = b"dll\0";
     }
 
+    #[cfg(unix)]
+    pub mod pollfd {
+        pub const G_POLLFD_FORMAT: &'static [u8] = b"%d\0";
+    }
+
+    #[cfg(windows)]
+    pub mod pollfd {
+
+        #[cfg(target_arch = "x86")]
+        pub const G_POLLFD_FORMAT: &'static [u8] = b"%#x\0";
+
+        #[cfg(target_arch = "x86_64")]
+        pub const G_POLLFD_FORMAT: &'static [u8] = b"%#I64x\0";
+    }
 }
 
 pub use consts::os::*;
 pub use consts::datamodel::*;
 pub use consts::filename::*;
+pub use consts::pollfd::*;
 
 </%block>
