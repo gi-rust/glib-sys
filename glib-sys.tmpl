@@ -1,5 +1,6 @@
 <%!
 
+from grust.mapping import Module
 from grust.namematch import MatchList
 
 # The GType symbols are in libgobject
@@ -50,6 +51,17 @@ suppress_c_names = MatchList(
     # Has a long double parameter
     "g_assertion_message_cmpnum"
 )
+
+modules = [
+    Module(
+        cfg = 'unix',
+        name = 'unix',
+        symbols_match = MatchList(
+            "g_source_*_unix_fd",
+            "g_unix_*",
+        )
+    ),
+]
 
 %>\
 <%inherit file="/sys/crate.tmpl"/>
