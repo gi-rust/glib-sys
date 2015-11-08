@@ -70,8 +70,7 @@ modules = [
 #![allow(non_upper_case_globals)]  // For G_CSET_a_2_z
 </%block>
 
-<%block name="custom_types">\
-
+<%block name="custom_types">
 #[repr(C)]
 pub struct GDate([u32; 2]);
 
@@ -170,11 +169,9 @@ pub struct  GScannerConfig {
 pub struct GTokenValue {
     v: u64
 }
-
 </%block>
 
-<%block name="custom_constants">\
-
+<%block name="custom_constants">
 pub const GLIB_SYSDEF_AF_INET:  gint = libc::AF_INET;
 pub const GLIB_SYSDEF_AF_INET6: gint = libc::AF_INET6;
 pub const GLIB_SYSDEF_AF_UNIX:  gint = libc::AF_UNIX;
@@ -332,5 +329,4 @@ pub use consts::os::*;
 pub use consts::datamodel::*;
 pub use consts::filename::*;
 pub use consts::pollfd::*;
-
 </%block>
